@@ -4,14 +4,14 @@ import socket
 
 class ServerSocket:
 
-    RECV_BYTES = 1024
+    RECV_BYTES = 2048
 
-    def __init__(self, mode, port, max_connections=5):
+    def __init__(self, mode, port, read_callback, max_connections=5):
         # Handle the socket's mode.
         # The socket's mode determines the IP address it binds to.
         # mode can be one of two values:
-        # localhost (127.0.0.1)
-        # public    (0.0.0.0)
+        # localhost -> (127.0.0.1)
+        # public ->    (0.0.0.0)
         if mode == "localhost":
             self.ip = mode
         elif mode == "public":
@@ -29,6 +29,8 @@ class ServerSocket:
         self._socket.setblocking(0)
         # Bind the socket, so it can listen.
         self._socket.bind((self.ip, self.port))
+        # Save the callback
+        self.callback = read_callback
         # Save the number of maximum connections.
         self._max_connections = max_connections
         if type(self._max_connections) != int:
@@ -62,8 +64,8 @@ class ServerSocket:
                     # Someone sent us something! Let's receive it.
                     data = sock.recv(ServerSocket.RECV_BYTES)
                     if data:
-                        # Put the data in queues to echo it back.
-                        queues[sock].put(data)
+                        # Call the callback
+                        self.callback(queues[sock], data)
                         # Put the client socket in writers so we can write to it
                         # later.
                         if sock not in writers:

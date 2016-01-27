@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>simpleTCP by gragas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">simpleTCP</h1>
+      <h2 class="project-tagline">A minimal non-blocking TCP server written for Python 3.</h2>
+      <a href="https://github.com/gragas/simpletcp" class="btn">View on GitHub</a>
+      <a href="https://github.com/gragas/simpletcp/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/gragas/simpletcp/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="simpletcp" class="anchor" href="#simpletcp" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>simpleTCP</h1>
+
+<p>simpleTCP is a minimal non-blocking TCP server written for Python 3.</p>
+
+<h3>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h3>
+
+<p>simpleTCP is written in pure Python 3. It has no external dependencies. To install,</p>
+
+<ol>
+<li>Clone the repository: <code>git clone https://github.com/gragas/simpletcp</code>
+</li>
+<li>Install the package: <code>python3 setup.py install</code>
+</li>
+</ol>
+
+<h3>
+<a id="quick-start" class="anchor" href="#quick-start" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Quick Start</h3>
+
+<p>simpleTCP just requires that you specify:</p>
+
+<ul>
+<li>the mode (local or public) of your server</li>
+<li>the port of your server</li>
+<li>what happens when your server receives data</li>
+</ul>
+
+<p>For example, here's an echo server:</p>
+
+<pre><code>from simpletcp.tcpserver import TCPServer
+
+def echo(queue, data):
+    queue.put(data)
+
+server = TCPServer("localhost", 5000, echo)
+server.run()
+</code></pre>
+
+<h4>
+<a id="callback-functions" class="anchor" href="#callback-functions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Callback functions</h4>
+
+<p><code>echo</code> is the server's callback function. This function is called whenever the server receives data.</p>
+
+<p>Callback functions should take two arguments:</p>
+
+<ol>
+<li>
+<code>queue</code>: This is a <code>queue.Queue</code> object. Any data put into this queue will be asynchronously sent back to the socket it was received from. In this case, our server echoes all data it receives, so we just put all received data right back into this queue with <code>queue.put(data)</code>.</li>
+<li>
+<code>data</code>: This is the data that the server received. It is a string of bytes. Its type is <code>bytes</code>.</li>
+</ol>
+
+<h4>
+<a id="the-tcpserver-itself" class="anchor" href="#the-tcpserver-itself" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The <code>TCPServer</code> itself</h4>
+
+<p>The <code>TCPServer</code> constructor takes three arguments:</p>
+
+<ol>
+<li>The <code>mode</code>. There are two valid <code>modes</code>: <code>"localhost"</code> and <code>"public"</code>. They are aptly named --- <code>"localhost"</code> means run the server on <code>127.0.0.1</code>. Therefore, the server is only visible on the machine on which it is running. <code>"public"</code> means run the server on <code>0.0.0.0</code> --- make it visible to anything that can see the machine on which it is running.</li>
+<li>The port. For development, pick a high (four-digit) number.</li>
+<li>The callback function. This function is called whenever the server receives data.</li>
+</ol>
+
+<h3>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Examples</h3>
+
+<p>Examples can be found in the <code>/examples</code> folder.</p>
+
+<h1>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contributing</h1>
+
+<h3>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h3>
+
+<p>Apache Version 2. It looks the coolest.</p>
+
+<h3>
+<a id="original-author-and-maintainer" class="anchor" href="#original-author-and-maintainer" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Original Author and Maintainer</h3>
+
+<p>Thomas Fischer</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/gragas/simpletcp">simpleTCP</a> is maintained by <a href="https://github.com/gragas">gragas</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>

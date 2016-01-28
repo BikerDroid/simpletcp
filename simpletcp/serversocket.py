@@ -45,6 +45,8 @@ class ServerSocket:
         writers = []
         # Create a dictionary of Queues for data to be sent.
         queues = dict()
+        # Create a similar dictionary that stores IP addresses.
+        IPs = dict()
         # Now, the main loop.
         while readers:
             # Block until a socket is ready for processing.
@@ -56,16 +58,18 @@ class ServerSocket:
                     client_socket, client_ip = self._socket.accept()
                     # Make it a non-blocking connection.
                     client_socket.setblocking(0)
-                    # Add it to our readers
+                    # Add it to our readers.
                     readers.append(client_socket)
-                    # Make a queue for it
+                    # Make a queue for it.
                     queues[client_socket] = queue.Queue()
+                    # Store its IP address.
+                    IPs[client_socket] = client_ip
                 else:
                     # Someone sent us something! Let's receive it.
                     data = sock.recv(ServerSocket.RECV_BYTES)
                     if data:
                         # Call the callback
-                        self.callback(queues[sock], data)
+                        self.callback(IPs[sock], queues[sock], data)
                         # Put the client socket in writers so we can write to it
                         # later.
                         if sock not in writers:

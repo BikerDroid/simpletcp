@@ -21,7 +21,7 @@ For example, here's an echo server:
 ```
 from simpletcp.tcpserver import TCPServer
 
-def echo(queue, data):
+def echo(ip, queue, data):
     queue.put(data)
 
 server = TCPServer("localhost", 5000, echo)
@@ -32,10 +32,11 @@ server.run()
 
 `echo` is the server's callback function. This function is called whenever the server receives data.
 
-Callback functions should take two arguments:
+Callback functions should take three arguments:
 
-1. `queue`: This is a `queue.Queue` object. Any data put into this queue will be asynchronously sent back to the socket it was received from. In this case, our server echoes all data it receives, so we just put all received data right back into this queue with `queue.put(data)`.
-2. `data`: This is the data that the server received. It is a string of bytes. Its type is `bytes`.
+1. `ip`: The IP address that the data was received from.
+2. `queue`: This is a `queue.Queue` object. Any data put into this queue will be asynchronously sent back to the socket it was received from. In this case, our server echoes all data it receives, so we just put all received data right back into this queue with `queue.put(data)`.
+3. `data`: This is the data that the server received. It is a string of bytes. Its type is `bytes`.
 
 #### The `TCPServer` itself
 

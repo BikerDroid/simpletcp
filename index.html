@@ -21,7 +21,7 @@
     <section class="main-content">
       <pre><code>from simpletcp.tcpserver import TCPServer
 
-def echo(queue, data):
+def echo(ip, queue, data):
     queue.put(data)
 
 server = TCPServer("localhost", 5000, echo)
@@ -60,7 +60,7 @@ server.run()
 
 <pre><code>from simpletcp.tcpserver import TCPServer
 
-def echo(queue, data):
+def echo(ip, queue, data):
     queue.put(data)
 
 server = TCPServer("localhost", 5000, echo)
@@ -72,9 +72,11 @@ server.run()
 
 <p><code>echo</code> is the server's callback function. This function is called whenever the server receives data.</p>
 
-<p>Callback functions should take two arguments:</p>
+<p>Callback functions should take three arguments:</p>
 
 <ol>
+<li>
+<code>ip</code>: The IP address that the data was received from.</li>
 <li>
 <code>queue</code>: This is a <code>queue.Queue</code> object. Any data put into this queue will be asynchronously sent back to the socket it was received from. In this case, our server echoes all data it receives, so we just put all received data right back into this queue with <code>queue.put(data)</code>.</li>
 <li>

@@ -19,7 +19,16 @@
     </section>
 
     <section class="main-content">
-      <h1>
+      <pre><code>from simpletcp.tcpserver import TCPServer
+
+def echo(queue, data):
+    queue.put(data)
+
+server = TCPServer("localhost", 5000, echo)
+server.run()
+</code></pre>
+
+<h1>
 <a id="simpletcp" class="anchor" href="#simpletcp" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>simpleTCP</h1>
 
 <p>simpleTCP is a minimal non-blocking TCP server written for Python 3.</p>
